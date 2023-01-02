@@ -1,48 +1,49 @@
 from general import *
 colorama.init(autoreset=True)
 
-fp , num_question = init()
-print("\033[1;33;40m目前有 %d 個考題\033[0m" % num_question)
+Paper , num_paper = Connect_To_Paper()
+show_Paper( Paper , num_paper )
+
+if num_paper == 0:
+    exit()
+
+operation_paper = input("\033[1;33;40m請選擇考卷，輸入[]的數字即可\033[0m")
+operation_paper = int(operation_paper)
+
+if operation_paper >= num_paper:
+    print("\033[1;33;40m沒那麼多考卷\033[0m")
+    exit()
+
+Paper.seek((1+operation_paper)*size_paper)
+paper_name = Paper.read((int)(size_paper/2))
+Paper.seek((1+operation_paper)*size_paper)
+paper_name = Paper.read(strlen(paper_name,size_paper))
+
+paper_fd , num_question = connect_to_paper( paper_name )
+show_paper( paper_fd , num_question )
 if num_question == 0:
     exit()
 
-for x in range(num_question):                            ## show info
-    print("\033[1;33;40m[%d] \033[0m" %x , end='')
-    fp.seek((1+x)*size_question , 0 )
-    chinese = fp.read((int)(size_description/2))
-    print("\033[1;32;40m中文釋義:%s    \033[0m" %chinese , end='')
-    for y in range(4):
-        fp.seek((1+x)*size_question+(1+y)*size_description , 0 )
-        option = fp.read((int)(size_description/2))
-        print("\033[1;34;40moption:%s         \033[0m" %option , end='')
-    print("")
-print("")                                                ## show info
+while num_question > 0:
+    operation_question = input("\033[1;33;40m請選擇你想要刪除的題目，輸入[]的數字即可\033[0m")
+    operation_question = int(operation_question)
+    if operation_question >= num_question:
+        print("\033[1;33;40m沒有那麼多題目\033[0m")
+        exit()
+    for x in range(operation_question,num_question):
+        paper_fd.seek((2+x)*size_question)
+        description = paper_fd.read((int)(size_description/2))
+        paper_fd.seek((2+x)*size_question+size_description)
+        answer = paper_fd.read((int)(size_answer/2))
+        write_thing( paper_fd , (1+x)*size_question , description , size_description )
+        write_thing( paper_fd , (1+x)*size_question+size_description , answer , size_answer )
+    num_question -= 1
+    update_num( paper_fd , num_question )
+    show_paper( paper_fd , num_question )
+    next_operation = input("\033[1;33;40m繼續刪除請按YES/Y/yes/y\033[0m")
+    if next_operation == "YES" or next_operation == "Y" or next_operation == "yes" or next_operation == "y":
+        continue
+    else:
+        break
 
-buf = input("\033[1;33;40mChoose a [number] you want to delete.\033[0m")
-delete_num = int(buf)
-if delete_num >= num_question:
-    exit()
-
-for x in range(delete_num+1 , num_question):         ## 刪除
-    fp.seek((1+x)*size_question , 0 )
-    temp = fp.read(size_question)
-    fp.seek((x)*size_question , 0 )
-    space = '\0'*size_question
-    fp.write(space)
-    fp.seek((x)*size_question , 0 )
-    fp.write(temp)                                   ## 刪除
-
-num_question -= 1
-fp.seek(0,0)
-for x in range(10):
-    fp.write('\0')
-fp.seek(0,0)
-fp.write(str(num_question))
-print("\033[1;33;40m刪除完畢\033[0m")
-    
-
-
-
-
-
-
+print("\033[1;33;40mdelete完成\033[0m")

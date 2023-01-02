@@ -1,34 +1,48 @@
 from general import *
 colorama.init(autoreset=True)
 
-fp , num_question = init()
-print("\033[1;33;40m目前有 %d 個考題\033[0m" %num_question )
+Paper , num_paper = Connect_To_Paper()
+show_Paper( Paper , num_paper )
 
-chinese = input("\033[1;32;40m請輸入中文(不超過10個字):\033[0m")#請輸入中文(綠色)
-if len(chinese) > 10:
+if num_paper == 0:
     exit()
 
-fp.seek((1+num_question)*size_question)
-# print("現在在:",fp.tell())
-fp.write(chinese)
-# print("現在在:",fp.tell())
-print("\033[1;34;40m請輸入四個選項(長度不超過10)\033[0m")
-for x in range(4):
-    option = input("\033[1;34;40moption[%d]:\033[0m" %x)       #請輸入選項(藍色)
-    if len(option) > 10:
-        exit()
-    fp.seek((1+num_question)*size_question+(1+x)*size_description)
-    # print("現在在:",fp.tell())
-    fp.write(option)
-    # print("現在在:",fp.tell())
-print("\033[1;33;40m新增完成\033[0m")
-num_question += 1
-fp.seek(0,0)
-fp.write(str(num_question))
-    
+operation_paper = input("\033[1;33;40m請選擇考卷，輸入[]的數字即可\033[0m")
+operation_paper = int(operation_paper)
 
+if operation_paper >= num_paper:
+    print("\033[1;33;40m沒那麼多考卷\033[0m")
+    exit()
 
+Paper.seek((1+operation_paper)*size_paper)
+paper_name = Paper.read((int)(size_paper/2))
+Paper.seek((1+operation_paper)*size_paper)
+paper_name = Paper.read(strlen(paper_name,size_paper))
 
+paper_fd , num_question = connect_to_paper( paper_name )
+show_paper( paper_fd , num_question )
 
+while True:
+    while True:
+        description = input("\033[1;32;40m(%d字上限)請輸入題目\033[0m" %(int(size_description/2)))
+        if len(description) > int(size_description/2):
+            print("\033[1;33;40m題目請不要超過%d個字謝謝\033[0m" %(int(size_description/2)))
+        else:
+            break
+    while True:
+        answer = input("\033[1;36;40m(%d字上限)請輸入答案\033[0m" %(int(size_answer/2)))
+        if len(answer) > int(size_answer/2):
+            print("\033[1;33;40m答案請不要超過%d個字謝謝\033[0m" %(int(size_answer/2)))        
+        else:
+            break
+    write_thing( paper_fd , (1+num_question)*size_question , description , size_description )
+    write_thing( paper_fd , (1+num_question)*size_question+size_description , answer , size_answer )
+    num_question += 1
+    update_num( paper_fd , num_question)
+    next_operation = input("\033[1;33;40m繼續新增請按YES/Y/yes/y\033[0m")
+    if next_operation == "YES" or next_operation == "Y" or next_operation == "yes" or next_operation == "y":
+        continue
+    else:
+        break
 
-    
+print("\033[1;33;40mpush完成\033[0m")
