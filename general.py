@@ -18,12 +18,13 @@ def strlen( string , limit ):
     return int(limit/2)
 
 def Connect_To_Paper():
-    fd = open( "Paper" , "r+" )
+    fd = open( "./paper/Paper" , "r+" )
     buf = fd.read(max)
     fd.seek(0)
     return fd , int(fd.read(strlen(buf,max*2)))
 
 def connect_to_paper( paper_name ):
+    paper_name = "./paper/" + paper_name
     fd = open( paper_name , "r+" )
     buf = fd.read(max)
     fd.seek(0)
