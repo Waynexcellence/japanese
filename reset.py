@@ -1,4 +1,5 @@
 from general import *
+colorama.init(autoreset=True)
 
 if not os.path.isdir("paper"):
     os.mkdir("paper")
