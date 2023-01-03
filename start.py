@@ -59,7 +59,7 @@ while True:
             break                          # 得到 correct_index
     print("\033[1;32;40m翻譯:%s    \033[0m" %description , end="")
     for x in range(num_option):
-        print("\033[1;36;40m選項[%d]  %s      \033[0m" %(x,option[x]) , end="")
+        print("\033[1;36;40m選項[%d] %s    \033[0m" %(x,option[x]) , end="")
     print("")
     user_answer = input("\033[1;33;40m請作答，輸入選項[]的數字即可\033[0m")
     user_answer = int(user_answer)
