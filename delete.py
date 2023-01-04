@@ -40,9 +40,12 @@ while num_question > 0:
     num_question -= 1
     update_num( paper_fd , num_question )
     show_paper( paper_fd , num_question )
-    next = input("\033[1;33;40m繼續刪除請按YES/Y/yes/y/1\033[0m")
-    if next == "YES" or next == "Y" or next == "yes" or next == "y" or next == "1":
-        continue
+    if num_question > 0:
+        next = input("\033[1;33;40m繼續刪除請按YES/Y/yes/y/1\033[0m")
+        if next == "YES" or next == "Y" or next == "yes" or next == "y" or next == "1":
+            continue
+        else:
+            break
     else:
         break
 
