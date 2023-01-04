@@ -39,8 +39,8 @@ while True:
     write_thing( paper_fd , (1+num_question)*size_question+size_description , answer , size_answer )
     num_question += 1
     update_num( paper_fd , num_question)
-    next_operation = input("\033[1;33;40m繼續新增請按YES/Y/yes/y\033[0m")
-    if next_operation == "YES" or next_operation == "Y" or next_operation == "yes" or next_operation == "y":
+    next = input("\033[1;33;40m繼續新增請按YES/Y/yes/y/1\033[0m")
+    if next == "YES" or next == "Y" or next == "yes" or next == "y" or next == "1":
         continue
     else:
         break
