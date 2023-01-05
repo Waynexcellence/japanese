@@ -1,6 +1,10 @@
 from general import *
 colorama.init(autoreset=True)
 
+sure = input("\033[1;33;40m確定要重置?(YES/Y/yes/y/1)\033;0m")
+if sure != "YES" and sure != "Y" and sure != "yes" and sure != "y" and sure != 1:
+    exit()
+
 if not os.path.isdir("paper"):
     os.mkdir("paper")
     print("\033[1;33;40m已新增paper資料夾\033[0m")
