@@ -40,7 +40,7 @@ while num_question > 0:
     new_answer      = input("\033[1;36;40m(%d字上限)請輸入新答案\033[0m" %(int(size_answer/2)))
     write_thing( paper_fd , (1+operation_question)*size_question , new_description , size_description )
     write_thing( paper_fd , (1+operation_question)*size_question+size_description , new_answer , size_answer )
-    next = input("\033[1;33;40m繼續新增請按YES/Y/yes/y/1\033[0m")
+    next = input("\033[1;33;40m繼續編輯請按YES/Y/yes/y/1\033[0m")
     if next == "YES" or next == "Y" or next == "yes" or next == "y" or next == "1":
         continue
     else:
