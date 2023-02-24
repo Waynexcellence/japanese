@@ -1,9 +1,18 @@
 import string
-import colorama
 import random
 import sys
 import os
 import shutil
+
+try:
+    import colorama
+    colorama.init(autoreset=True)
+    
+except:
+    os.system("pip install colorama")
+    import colorama
+    colorama.init(autoreset=True)
+    print("\033[1;33;40m已為您安裝好colorama套件\033[0m")
 
 max = 10
 size_paper = 60
@@ -39,7 +48,7 @@ def show_Paper( fd , num ):
         fd.seek((1+x)*size_paper)
         paper_name = fd.read((int)(size_paper/2))
         print("\033[1;33;40m[%d] %s" %(x,paper_name) )
-print("")
+    print("")
 
 def show_paper( fd , num ):
     if num == 0:
